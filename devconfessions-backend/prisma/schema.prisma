@@ -7,13 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Confession {
-  id        Int      @id @default(autoincrement())
-  text      String   @db.VarChar(140)
-  downVote  Int      @default(0)
-  upVote    Int      @default(0)
-  tags      String[]
-  createdAt DateTime @default(now()) @map("created_at")
+model User {
+  id       Int    @id @default(autoincrement())
+  userName String
+  email    String @unique
+  password String
 
-  @@map("confessions")
+  Confession Confession[]
+  UserVote   UserVote[]
+}
+
+model Confession {
+  id        Int        @id @default(autoincrement())
+  text      String     @db.VarChar(140)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  author    User?      @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  votes     UserVote[]
+  upVotes   Int        @default(0)
+  downVotes Int        @default(0)
+}
+
+model UserVote {
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  confessionId Int
+  confession   Confession @relation(fields: [confessionId], references: [id])
+  type         VoteType
+  createdAt    DateTime   @default(now())
+
+  @@id([userId, confessionId])
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }
