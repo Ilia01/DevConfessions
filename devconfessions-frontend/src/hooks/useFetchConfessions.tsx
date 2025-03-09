@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Confession } from "../App";
+import { Confession } from "../pages/HomePage";
 
 export const useFetchConfessions = (sortBy: "new" | "top") => {
   const [confessions, setConfessions] = useState<Confession[]>([]);
@@ -21,5 +21,5 @@ export const useFetchConfessions = (sortBy: "new" | "top") => {
     fetchConfessions();
   }, [sortBy]);
 
-  return { confessions, fetchConfessions };
+  return { confessions, setConfessions, fetchConfessions };
 };

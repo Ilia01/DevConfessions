@@ -1,20 +1,15 @@
 import { useState } from "react";
-import { Confession } from "../App";
+import { Confession } from "../pages/HomePage";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 
 interface Props {
   confession: Confession;
-  darkMode: boolean;
   onVote: (updatedConfession: Confession) => void;
 }
 
-export default function ConfessionItem({
-  confession,
-  darkMode,
-  onVote,
-}: Props) {
+export default function ConfessionItem({ confession, onVote }: Props) {
   const [voted, setVoted] = useState(false);
 
   const handleVote = async (type: "up" | "down") => {
@@ -40,51 +35,32 @@ export default function ConfessionItem({
       toast.error(`Failed to ${type}vote. Try again!`);
     }
   };
+
   const formattedDate = new Date(confession.createdAt).toLocaleDateString();
 
   return (
-    <div
-      className={`p-4 rounded-lg shadow-sm transition-colors duration-300 ${
-        darkMode
-          ? "bg-gray-800 border-gray-700 text-gray-100"
-          : "bg-white border-gray-200 text-gray-900"
-      }`}
-    >
-      <p className="mb-3">{confession.text}</p>
-
+    <div className="p-5 rounded-xl shadow-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+      <p className="mb-4 text-gray-800 dark:text-gray-100">{confession.text}</p>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
-            className={`flex items-center gap-1 px-3 py-1 rounded transition-colors duration-150 ${
-              darkMode
-                ? "bg-gray-700 text-white hover:bg-gray-600"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
+            className="flex items-center gap-1 px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleVote("up")}
             disabled={voted}
           >
             <FaRegThumbsUp className="w-5 h-5" />
             <span className="text-sm font-medium">{confession.upVote}</span>
           </button>
-
           <button
-            className={`flex items-center gap-1 px-3 py-1 rounded transition-colors duration-150 ${
-              darkMode
-                ? "bg-gray-700 text-white hover:bg-gray-600"
-                : "bg-red-500 text-white hover:bg-red-600"
-            }`}
+            className="flex items-center gap-1 px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => handleVote("down")}
             disabled={voted}
           >
             <FaRegThumbsDown className="w-5 h-5" />
             <span className="text-sm font-medium">{confession.downVote}</span>
           </button>
-
-          {/* Tags */}
         </div>
-        <span
-          className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}
-        >
+        <span className="text-sm text-gray-500 dark:text-gray-400">
           {formattedDate}
         </span>
       </div>

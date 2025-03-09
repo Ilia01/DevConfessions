@@ -3,3 +3,26 @@
 .dark {
   @apply bg-gray-900 text-white;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+input {
+  caret-color: white;
+}
+
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset !important;
+  -webkit-text-fill-color: white !important;
+  caret-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset !important;
+  -webkit-text-fill-color: white !important;
+  caret-color: white !important;
+}
